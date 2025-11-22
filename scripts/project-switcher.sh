@@ -4,6 +4,8 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
     selected=$({
+        echo "[New Tab]"
+        echo "[Close Current Window]"
         echo "$HOME/.dotfiles"
         find "$HOME/vinted" -mindepth 1 -maxdepth 1 -type d
         find "$HOME/Documents" -mindepth 1 -maxdepth 1 -type d
@@ -11,6 +13,20 @@ else
 fi
 
 if [[ -z $selected ]]; then
+    exit 0
+fi
+
+# Handle special actions
+if [[ "$selected" == "[New Tab]" ]]; then
+    timestamp=$(date +%s)
+    window_name="home-$timestamp"
+    tmux new-window -n "$window_name" -c "$HOME"
+    tmux send-keys -t "$window_name" "nvim ." C-m
+    exit 0
+fi
+
+if [[ "$selected" == "[Close Current Window]" ]]; then
+    tmux kill-window
     exit 0
 fi
 
