@@ -4,8 +4,9 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
     selected=$({
-        echo "$HOME/Documents/.dotfiles-work"
+        echo "$HOME/.dotfiles"
         find "$HOME/vinted" -mindepth 1 -maxdepth 1 -type d
+        find "$HOME/Documents" -mindepth 1 -maxdepth 1 -type d
     } | fzf --select-1 --exit-0)
 fi
 
