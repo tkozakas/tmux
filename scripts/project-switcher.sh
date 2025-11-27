@@ -6,9 +6,9 @@ else
     selected=$({
         echo "[New Tab]"
         echo "[Close Current Window]"
-        echo "$HOME/.dotfiles"
-        find "$HOME/vinted" -mindepth 1 -maxdepth 1 -type d
-        find "$HOME/Documents" -mindepth 1 -maxdepth 1 -type d
+        [[ -d "$HOME/.dotfiles" ]] && echo "$HOME/.dotfiles"
+        [[ -d "$HOME/vinted" ]] && find "$HOME/vinted" -mindepth 1 -maxdepth 1 -type d
+        [[ -d "$HOME/Documents" ]] && find "$HOME/Documents" -mindepth 1 -maxdepth 1 -type d
     } | fzf --select-1 --exit-0)
 fi
 
@@ -32,7 +32,7 @@ fi
 
 selected_name=$(basename "$selected" | sed 's/^\.//')
 
-if tmux list-windows -a -F '#{window_name}' | grep -q "^${selected_name}$"; then
+if tmux list-windows -F '#{window_name}' | grep -q "^${selected_name}$"; then
     CURRENT_WINDOW_NAME=$(tmux display-message -p '#{window_name}')
 
     if [ "$selected_name" = "$CURRENT_WINDOW_NAME" ]; then
